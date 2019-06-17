@@ -1,14 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <title>UCDb</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
 </head>
 <body>
+    <form name="signUp" onsubmit="auth()">
+        First Name: 
+        <input type="text" name="firstName">
+        <br>
+        Last name:  
+        <input type="text" name="lastName">
+        <br>
+        Email:  
+        <input type="text" name="email">
+        <br>
+        Senha:  
+        <input type="password" name="password">
+        <input type="submit" value="Submit">
+      </form> 
+
+
+<script>
+    function auth() {
+    const $firstName = document.forms["signUp"]["firstName"].value
+    const $lastName = document.forms["signUp"]["lastName"].value
+    const $email = document.forms["signUp"]["email"].value
+    const $password = document.forms["signUp"]["password"].value
+    console.log($firstName);
+    console.log($lastName);
+    console.log($email);
+    console.log($password);
     
+    fetch("http://api-ucdb.herokuapp.com/api/v1/users/", {
+      method: 'POST',
+      body: JSON.stringify({
+        primeiroNome: $firstName, 
+        ultimoNome: $lastName, 
+        email: $email, 
+        senha: $password
+        })
+      })
+    .then(response => {
+      if(!response.ok)
+          throw new Error("não foi possível completar cadastro");
+
+      return response.text();
+    })
+    .then(data => alert(data));
+    return true;
+}
+</script>
 </body>
 </html>
