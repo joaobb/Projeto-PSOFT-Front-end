@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset=utf8>
     <title>UCDb</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    />
 </head>
 <body>
-    <form name="signUp" onsubmit="auth()">
+    <form name="signUp" onsubmit="return auth()">
         First Name: 
-        <input type="text" name="firstName">
+        <input type="text" name="firstName" value ="Jose">
         <br>
         Last name:  
-        <input type="text" name="lastName">
+        <input type="text" name="lastName" value="De Dev">
         <br>
         Email:  
-        <input type="text" name="email">
+        <input type="text" name="email" value="jose@de.dev">
         <br>
         Senha:  
-        <input type="password" name="password">
+        <input type="password" name="password" value="isthebest">
         <input type="submit" value="Submit">
       </form> 
 
 
 <script>
+    function data() {
+      const $firstName = document.forms["signUp"]["firstName"].value
+      const $lastName = document.forms["signUp"]["lastName"].value
+      const $email = document.forms["signUp"]["email"].value
+      const $password = document.forms["signUp"]["password"].value
+      
+      const req = {
+        firstName: $firstName,
+        lastName: $lastName,
+        email: $email,
+        password: $password
+      }
+      return JSON.stringify(req);
+     }
+
     function auth() {
-    const $firstName = document.forms["signUp"]["firstName"].value
-    const $lastName = document.forms["signUp"]["lastName"].value
-    const $email = document.forms["signUp"]["email"].value
-    const $password = document.forms["signUp"]["password"].value
-    console.log($firstName);
-    console.log($lastName);
-    console.log($email);
-    console.log($password);
-    
-    fetch("http://api-ucdb.herokuapp.com/api/v1/users/", {
+    // fetch("http://api-ucdb.herokuapp.com/api/v1/users/", {
+    fetch("https://ucdb-plataform1.herokuapp.com/api/v1/users/", {
       method: 'POST',
-      body: JSON.stringify({
-        primeiroNome: $firstName, 
-        ultimoNome: $lastName, 
-        email: $email, 
-        senha: $password
-        })
+      headers: {'Content-Type': 'application/json; charset=utf-8'},
+      body: data()
       })
     .then(response => {
       if(!response.ok)
           throw new Error("não foi possível completar cadastro");
-
       return response.text();
     })
     .then(data => alert(data));
