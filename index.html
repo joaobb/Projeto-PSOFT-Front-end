@@ -3,56 +3,76 @@
 <head>
     <meta charset=utf8>
     <title>UCDb</title>
-    />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <form name="signUp" onsubmit="return auth()">
-        First Name: 
-        <input type="text" name="firstName" value ="Jose">
-        <br>
-        Last name:  
-        <input type="text" name="lastName" value="De Dev">
-        <br>
-        Email:  
-        <input type="text" name="email" value="jose@de.dev">
-        <br>
-        Senha:  
-        <input type="password" name="password" value="isthebest">
-        <input type="submit" value="Submit">
-      </form> 
 
+    <header class="main-header">
+        <div class="container">
+            <a href="#" class="logo">
+                <img class="home" src="download.jpeg" width="90" height="90">
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="main-nav-list">
+                    <li>
+                        <button class="headerBt" id="loginBt">login</button>
+                    </li>
+                    <li>
+                        <button class="headerBt" id="registerBt">register</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="main-content"> 
+        <form class="pure-form" id="cadeiraForm">
+                <input type="text" class="pure-input-rounded" placeholder="Nome da cadeira...">
+        </form>
+    </main>
 
-<script>
-    function data() {
-      const $firstName = document.forms["signUp"]["firstName"].value
-      const $lastName = document.forms["signUp"]["lastName"].value
-      const $email = document.forms["signUp"]["email"].value
-      const $password = document.forms["signUp"]["password"].value
-      
-      const req = {
-        firstName: $firstName,
-        lastName: $lastName,
-        email: $email,
-        password: $password
-      }
-      return JSON.stringify(req);
-     }
+    <br>
+    <div id="signInMod">
+        <div class="modContent">
+            <form name="signIn" class="pure-form" onsubmit="return false">
+                <h1>Login</h1>
 
-    function auth() {
-    // fetch("http://api-ucdb.herokuapp.com/api/v1/users/", {
-    fetch("https://ucdb-plataform1.herokuapp.com/api/v1/users/", {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json; charset=utf-8'},
-      body: data()
-      })
-    .then(response => {
-      if(!response.ok)
-          throw new Error("não foi possível completar cadastro");
-      return response.text();
-    })
-    .then(data => alert(data));
-    return true;
-}
-</script>
+                <fieldset class="pure-group">
+                    <input type="text" id="emailInpSignin" name="email" placeholder="Email" class="pure-input-1-2" onkeyup='validEmail(value, "Signin")'>
+                    <input type="password" id="passwdInpSignin" name="password" placeholder="Senha" class="pure-input-1-2">
+                    <p style="display:inline" id="emailValitySignin"></p>
+                </fieldset>
+                
+                <input type="submit" value="SingIn" class="pure-button" onclick="signin()">
+            </form> 
+        </div>
+    </div>
+
+   
+
+    <div id="signUpMod">
+        <div class="modContent">
+            <form name="signUp" class="pure-form" onsubmit="return false">
+                <h1>Cadastro</h1>
+                <input type="text" name="firstName" id="firstNameInp" placeholder="Nome">
+                <input type="text" name="lastName" id="lastNameInp" placeholder="Sobrenome">
+                
+                <br>
+                <input type="email" id="emailInpSignup" name="email" placeholder="Email" onkeyup='validEmail(value, "Signup")'>
+                <br>
+                <input type="password" id="passwdInpSignUp" name="password" value="txutxuca" onkeyup='validPasswd(value, "Signup")'>
+
+                
+                <p style="display:inline" id="emailValitySignup"></p>
+                <p style="display:inline" id="passwdValitySignup"></p>
+                <br>
+                <input type="submit" value="SignUp" class="pure-button" id="signUpBt" onclick="signup()">
+            </form> 
+        </div>
+    </div>
 </body>
+<script src="script.js"></script>
 </html>
