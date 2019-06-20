@@ -70,13 +70,12 @@ function signup() {
 
 const modSignIn= document.getElementById("signInMod");
 const modSignUp = document.getElementById("signUpMod");
-
-const discSearchBar = document.querySelector("#cadeiraForm");
+const discSearchBar = document.getElementById("discSearchBar");
 
 discSearchBar.onkeyup = () => {
-  console.log("ainda nn sei nem fazer isso :D")
+  //Do a fetch with the input value and filter subjects
+  console.log("ainda nn sei nem procurar " + discSearchBar.value + " :D")
 }
-
 
 document.getElementById("loginBt").onclick = () => {
   modSignIn.style.display="block";
