@@ -68,8 +68,15 @@ function signup() {
   return false;
 }
 
-var modSignIn= document.getElementById("signInMod")
-var modSignUp = document.getElementById("signUpMod")
+const modSignIn= document.getElementById("signInMod");
+const modSignUp = document.getElementById("signUpMod");
+
+const discSearchBar = document.querySelector("#cadeiraForm");
+
+discSearchBar.onkeyup = () => {
+  console.log("ainda nn sei nem fazer isso :D")
+}
+
 
 document.getElementById("loginBt").onclick = () => {
   modSignIn.style.display="block";
