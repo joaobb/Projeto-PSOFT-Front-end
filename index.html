@@ -1,56 +1,60 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset=utf8>
     <title>UCDb</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+        integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
 
     <header class="main-header">
-            <div class="container">
-                
-                <nav class="main-nav">
-                    <ul class="main-nav-list">
-                        <li>
-                            <button class="header_bt">/disciplinas</button>
-                        </li>
-                        
-                        <li>
-                            <button class="header_bt">/rank</button>
-                        </li>
-                    </ul>
-                </nav>
+        <div class="container">
 
-                <a href="/" class="logo">
-                    <img class="home" src="images/ucdb.png" width="90" height="90">
-                </a>
-                
-                <nav class="main-nav">
-                    <ul class="main-nav-list">
-                        <li>
-                            <button class="header_bt" id="loginBt" onclick="modSignUp.style.display='block'">/entrar</button>
-                        </li>
+            <nav class="main-nav">
+                <ul class="main-nav-list">
+                    <li>
+                        <button class="header_bt">/disciplinas</button>
+                    </li>
 
-                        <li>
-                            <button class="header_bt" id="registerBt">/registrar</button>
-                        </li>
-                    </ul>
-                </nav>
+                    <li>
+                        <button class="header_bt">/rank</button>
+                    </li>
+                </ul>
+            </nav>
 
-            </div>
-        </header>
+            <a href="/" class="logo">
+                <img class="home" src="images/ucdb.png" width="90" height="90">
+            </a>
+
+            <nav class="main-nav">
+                <ul class="main-nav-list">
+                    <li>
+                        <button class="header_bt" id="loginBt"
+                            onclick="modSignUp.style.display='block'">/entrar</button>
+                    </li>
+
+                    <li>
+                        <button class="header_bt" id="registerBt">/registrar</button>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
 
     <main class="main-content">
-            <div class="content">
-                <h1>XD</h1>
-    
-                <form class="pure-form" id="cadeiraForm">
-                        <input type="text" id="discSearchBar" class="pure-input-rounded" placeholder="Nome da cadeira :D">
-                </form>
-            </div>
+        <div class="content">
+            <h1>Bicho, sei lá...</h1>
+
+            <form class="pure-form" id="cadeiraForm" onsubmit="return false">
+                <input type="text" id="discSearchBar" class="pure-input-rounded" placeholder="Nome da cadeira :D">
+            </form>
+        </div>
     </main>
 
     <div id="signInMod">
@@ -59,13 +63,13 @@
                 <h1>Login</h1>
 
                 <fieldset class="pure-group">
-                    <input type="email" id="emailInpSignin" name="email" placeholder="Email" class="pure-input-1-2" onkeyup='validEmail(value, "Signin")'>
-                    <input type="password" id="passwdInpSignin" name="password" placeholder="Senha" class="pure-input-1-2">
-                    <p style="display:inline" id="emailValitySignin"></p>
+                    <input type="email" id="emailInpSignin" name="email" placeholder="Email"
+                        onkeyup='validEmail(value)'>
+                    <input type="password" id="passwdInpSignin" name="password" placeholder="Senha">
                 </fieldset>
-                
+
                 <input type="submit" value="SingIn" class="pure-button" onclick="signin()">
-            </form> 
+            </form>
         </div>
     </div>
 
@@ -73,27 +77,29 @@
         <div class="modContent">
             <form name="signUp" class="pure-form" onsubmit="return false">
                 <h1>Cadastro</h1>
-                <input type="text" name="firstName" id="firstNameInp" placeholder="Nome">
-                <input type="text" name="lastName" id="lastNameInp" placeholder="Sobrenome">
-                
-                <br>
-                <input type="email" id="emailInpSignup" name="email" placeholder="Email" onkeyup='validEmail(value, "Signup")'>
-                <br>
-                <input type="password" id="passwdInpSignUp" name="password" value="txutxuca" onkeyup='validPasswd(value, "Signup")'>
 
-                
-                <p style="display:inline" id="emailValitySignup"></p>
-                <p style="display:inline" id="passwdValitySignup"></p>
-                <br>
-                <input type="submit" value="SignUp" class="pure-button" id="signUpBt" onclick="signup()">
-            </form> 
+                <fieldset class="pure-group">
+                    <input type="text" name="firstName" id="firstNameInp" placeholder="Nome">
+                    <input type="text" name="lastName" id="lastNameInp" placeholder="Sobrenome">
+                    <br>
+                    <input type="email" id="emailInpSignup" name="email" placeholder="Email"
+                        onkeyup='validEmail(value)'>
+                    <input type="password" id="passwdInpSignUp" name="password" value="txutxuca"
+                        onkeyup='validPasswd(value)'>
+
+                    <input type="submit" value="SignUp" class="pure-button" id="signUpBt" onclick="signup()">
+
+                </fieldset>
+            </form>
         </div>
     </div>
-    
+
+    <main class="disciplinas-container"></main>
+
     <footer class="footer">
-            <div>
-                <h2>...</h2>
-            </div>
+        <div>
+            <h2>...</h2>
+        </div>
     </footer>
     <script src="script.js"></script>
 </body>

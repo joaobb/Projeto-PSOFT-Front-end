@@ -5,9 +5,12 @@ back="https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/findSubjects?subst
 cont=0
 
 while true; do
-    sleep 1740
+    echo "Accessed times:" $cont
+    echo "Time:" $(date +"%H:%M:%S")
+
+    sleep 600 #Will curl both services every 10 minutes
         curl -s -S $front > /dev/null
 	curl -s -S $back > /dev/null
-	x=$((x+1))
-	echo "Accessed times:" $x
+	cont=$((cont + 1))
+
 done

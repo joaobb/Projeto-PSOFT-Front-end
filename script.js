@@ -1,13 +1,11 @@
-function emailValidator(email) {
+function validEmail(email) {
     var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return  regex.test(email);
 }
 
-passwdValidator = passwd => passwd.length > 7;
+validPasswd = passwd => passwd.length > 7;
 
-validEmail = (email, element) => document.getElementById("emailVality" + element).innerText = emailValidator(email) ? "Valid Email" : "Invalid Email";
-validPasswd = (passwd, element) => document.getElementById("passwdVality" + element).innerText = passwdValidator(passwd) ? "Valid Password" : "Invalid Password";
-
+// * TRANFORMAR EM MVC (OBJETIFICAR) * \\
 function dataSignUp() {
   const $firstName = document.forms["signUp"]["firstName"].value;
   const $lastName = document.forms["signUp"]["lastName"].value;
@@ -40,6 +38,10 @@ function dataSignIn() {
   return JSON.stringify(req);
 }
 
+// * TRANFORMAR EM MVC (OBJETIFICAR) * \\
+
+// * SIGNIN AND SIGNUP FETCHS BEGIN * \\
+
 function signin() {
   fetch("https://ucdb-plataform1.herokuapp.com/api/v1/auth/login",{
     method : "POST",
@@ -68,13 +70,15 @@ function signup() {
   return false;
 }
 
+// * SIGNIN AND SIGNUP FETCHS END * \\
+
 const modSignIn= document.getElementById("signInMod");
 const modSignUp = document.getElementById("signUpMod");
-const discSearchBar = document.getElementById("discSearchBar");
+const $discSearchBar = document.getElementById("discSearchBar");
+const $discBt = document.getElementsByClassName("discBt");
 
-discSearchBar.onkeyup = () => {
-  //Do a fetch with the input value and filter subjects
-  console.log("ainda nn sei nem procurar " + discSearchBar.value + " :D")
+$discBt.onclick = () => {
+  console.log($discBt.id)
 }
 
 document.getElementById("loginBt").onclick = () => {
@@ -91,3 +95,56 @@ window.onclick = (event) => {
     modSignUp.style.display = "none"
   }
 }
+
+$discSearchBar.onkeyup = async function ()  {
+  console.log($discSearchBar.value)
+  if ($discSearchBar.value == "") {
+    killAllChildren()
+    return;
+  } 
+  await controler()
+}
+
+capitalize = function(string) {
+  string = string.toLowerCase()
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// * DISCIPLINES SEARCH BAR RESULTS BEGIN * \\
+
+function discButtonCreator (discId, discNome) { // Creates buttons based on the input
+  let button = document.createElement("button");
+  button.id = discId;
+  button.innerText = (discId + " - " + capitalize(discNome));
+  button.className = "discBt";
+  
+  document.querySelector(".disciplinas-container").appendChild(button);
+}
+
+function killAllChildren() {  //Cleans disciplinas container
+  let $discContainer = document.querySelector(".disciplinas-container");
+  while ($discContainer.firstChild) {
+      $discContainer.removeChild($discContainer.firstChild);
+  }
+}
+
+var controler = async function () {
+
+  var discList = await discFethcer()
+
+  killAllChildren(); //:D
+
+  discList.forEach(discipline => {
+      discButtonCreator(discipline["id"], discipline["nome"]);
+  });
+}
+
+discFethcer = async function () {
+  const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/findSubjects/?substring=" + $discSearchBar.value.replace(/ /g, "%20");
+  let fetcher = await fetch(requestUrl)
+  if(!fetcher.ok) throw new Error("Fetch failed");
+  let discJson = await fetcher.json();
+  return discJson;
+}
+
+// * DISCIPLINES SEARCH BAR RESULTS END * \\
