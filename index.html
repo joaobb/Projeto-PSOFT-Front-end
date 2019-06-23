@@ -52,7 +52,7 @@
             <h1>Bicho, sei lá...</h1>
 
             <form class="pure-form" id="cadeiraForm" onsubmit="return false">
-                <input type="text" id="discSearchBar" class="pure-input-rounded" placeholder="Nome da cadeira :D">
+                <input type="text" id="discSearchBar" autocomplete="off" class="pure-input-rounded" placeholder="Nome da cadeira :D">
             </form>
         </div>
     </main>
@@ -86,10 +86,9 @@
                         onkeyup='validEmail(value)'>
                     <input type="password" id="passwdInpSignUp" name="password" value="txutxuca"
                         onkeyup='validPasswd(value)'>
-
+                    </fieldset>
+                    
                     <input type="submit" value="SignUp" class="pure-button" id="signUpBt" onclick="signup()">
-
-                </fieldset>
             </form>
         </div>
     </div>

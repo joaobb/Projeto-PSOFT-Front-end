@@ -6,13 +6,15 @@
     padding: 0;
 }
 
-html, body {
+html { 
     height: 100%;
 }
 
 body {
+    min-height: 100%;
     background-color: #ffe4c4;
     margin: 0;
+    position: relative;
 }
 
 img {
@@ -110,12 +112,13 @@ li, a, button, h1 {
 #signUpMod {
     display: none;
     position: fixed;
+    justify-content: center;
     z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     background-color: rgb(177, 2, 2);
     background-color: rgba(0,0,0,0.4);
 }
@@ -126,13 +129,13 @@ li, a, button, h1 {
     justify-content: center;
     text-align: center;
     
-    flex-direction: row;
+    flex-direction: column;
 
     background-color: #fefefe;
     margin: 20% auto; /* 15% from the top and centered */
     border: 1px solid #888;
-    width: 40%;
-    height: 40%;
+    max-width: 450px;
+    max-height: 550px;
     
 }
 
@@ -140,7 +143,7 @@ li, a, button, h1 {
     margin-top: 5%;
 }
 
-#signUpMod .modContent {
+.modContent {
     width: 50%;
     height: 50%;
 }
@@ -149,7 +152,9 @@ li, a, button, h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+
     margin: 10px 100px;
+    
 }
 
 .discBt {
@@ -170,15 +175,19 @@ li, a, button, h1 {
 
 .footer {
     display: flex;
-    position: fixed;
-    align-items: center;
-
+    position: absolute;
+    align-items: center; 
     justify-content: center;
 
-    bottom: 0px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
     width: 100%;
     height: 45px;
 
     box-shadow: 0 2px 6px rgba(0,0,0,.1);
     background-color: #fff7ef;
+
+    transform: translateY(100%);
 }
