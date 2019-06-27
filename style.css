@@ -191,3 +191,68 @@ li, a, button, h1 {
 
     transform: translateY(100%);
 }
+
+
+/* Disciplina modal */
+
+#disciplinaMod {
+    text-align: center;
+    display: none;
+    position: fixed;
+    justify-content: center;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(177, 2, 2);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modContentDisc {
+    display: flex;
+    
+    flex-direction: column;
+
+    background-color: #fefefe;
+    margin: 3% auto; /* 15% from the top and centered */
+    border: 1px solid #888;
+    max-width: 70%;
+    margin-bottom: 300px;
+}
+
+#dadosDisc {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    margin: 15px;
+}
+
+#likeInfo {
+    display: flex;
+    align-items: center;
+}
+
+#likeBt {
+    margin-right: 10px;
+    width:40px;
+    height: 40px;
+}
+
+#likeBt:hover {
+    filter: invert(32%) sepia(95%) saturate(1073%) hue-rotate(103deg) brightness(95%) contrast(105%);
+}
+
+.comentario {
+    background-color: bisque;
+    margin: 15px 10%;
+    text-align: left;
+}
+
+.donoComentario {
+    display: flex;
+    justify-content: space-around;
+}
+
