@@ -32,15 +32,7 @@
             </a>
 
             <nav class="main-nav">
-                <ul class="main-nav-list">
-                    <li>
-                        <button class="header_bt" id="loginBt"
-                            onclick="modSignUp.style.display='block'">/entrar</button>
-                    </li>
-
-                    <li>
-                        <button class="header_bt" id="registerBt">/registrar</button>
-                    </li>
+                <ul class="main-nav-list" id="userEntries">
                 </ul>
             </nav>
 
@@ -49,7 +41,7 @@
 
     <main class="main-content">
         <div class="content">
-            <h1>Bicho, sei lá...</h1>
+            <h1>Procura tuas cadeiras ai...</h1>
 
             <form class="pure-form" id="cadeiraForm" onsubmit="return false">
                 <input type="text" id="discSearchBar" autocomplete="off" class="pure-input-rounded"
@@ -58,18 +50,19 @@
         </div>
     </main>
 
+    <main class="disciplinas-container"></main>
+
     <div id="signInMod">
         <div class="modContent">
             <form name="signIn" class="pure-form" onsubmit="return false">
                 <h1>Login</h1>
 
                 <fieldset class="pure-group">
-                    <input type="email" id="emailInpSignin" name="email" placeholder="Email"
-                        onkeyup='validEmail(value)'>
+                    <input type="email" id="emailInpSignin" name="email" placeholder="Email">
                     <input type="password" id="passwdInpSignin" name="password" placeholder="Senha">
                 </fieldset>
 
-                <input type="submit" value="SingIn" class="pure-button" onclick="signin()">
+                <input type="submit" value="SingIn" class="pure-button" id="signInBt">
             </form>
         </div>
     </div>
@@ -83,38 +76,34 @@
                     <input type="text" name="firstName" id="firstNameInp" placeholder="Nome">
                     <input type="text" name="lastName" id="lastNameInp" placeholder="Sobrenome">
                     <br>
-                    <input type="email" id="emailInpSignup" name="email" placeholder="Email"
-                        onkeyup='validEmail(value)'>
-                    <input type="password" id="passwdInpSignUp" name="password" value="txutxuca"
-                        onkeyup='validPasswd(value)'>
+                    <input type="email" id="emailInpSignup" name="email" placeholder="Email"'>
+                    <input type="password" id="passwdInpSignUp" name="password" value="txutxuca"'>
                 </fieldset>
 
-                <input type="submit" value="SignUp" class="pure-button" id="signUpBt" onclick="signup()">
+                <input type="submit" value="SignUp" class="pure-button" id="signUpBt">
             </form>
         </div>
     </div>
 
+    
     <div id="disciplinaMod">
         <div class="modContentDisc">
             <div id="dadosDisc">
                 <h2 id="nomeDisc"></h2>
-                <div id="likeInfo">
-                    <input type="image" id="likeBt" src="./like.svg">
-                    <p id=likeNum></p>
-                </div>
+                <div id="likeInfo"></div>
             </div>
             <div id="comentariosContainer"></div>
         </div>
     </div>
 
-    <main class="disciplinas-container"></main>
-
     <footer class="footer">
         <div>
-            <h2>...</h2>
+            <h4>;-;</h4>
         </div>
     </footer>
-    <script src="script.js"></script>
+
+    <script type="module" src="signInUpOut.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 
 

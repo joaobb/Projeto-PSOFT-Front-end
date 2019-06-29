@@ -1,115 +1,30 @@
-function validEmail(email) {
-  var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
+import model from "./model.js";
+
+//Capitalizes the string
+function capitalize(string) {                                       
+  string = string.toLowerCase()
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-validPasswd = passwd => passwd.length > 7;
-
-// * TRANFORMAR EM MVC (OBJETIFICAR) * \\
-function dataSignUp() {
-  const $firstName = document.forms["signUp"]["firstName"].value;
-  const $lastName = document.forms["signUp"]["lastName"].value;
-  const $email = document.forms["signUp"]["email"].value;
-  const $password = document.forms["signUp"]["password"].value;
-  if ($firstName == "" || $lastName == "" || $email == "" || $password == "" || !validEmail($email) || !validPasswd($password)) {
-    alert("Invalid input")
-    throw new Error("Invalid input")
-  }
-  const req = {
-    firstName: $firstName,
-    lastName: $lastName,
-    email: $email,
-    password: $password
-  }
-  return JSON.stringify(req);
-}
-
-function dataSignIn() {
-  const $email = document.forms["signIn"]["email"].value;
-  const $password = document.forms["signIn"]["password"].value;
-  if ($email == "" || $password == "" || !validEmail($email) || !validPasswd($password)) {
-    alert("Invalid input")
-    throw new Error("Invalid input")
-  }
-  const req = {
-    email: $email,
-    password: $password
-  }
-  return JSON.stringify(req);
-}
-
-// * TRANFORMAR EM MVC (OBJETIFICAR) * \\
-
-// * SIGNIN AND SIGNUP FETCHS BEGIN * \\
-
-function signin() {
-  fetch("https://ucdb-plataform1.herokuapp.com/api/v1/auth/login", {
-    method: "POST",
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    body: dataSignIn()
-  }).then(response => {
-    console.log(response)
-    if (!response.ok) throw new Error("Registration failed");
-    return response.text();
-  }).then(responseTxt => {
-    console.log(responseTxt)
-    localStorage.setItem("userToken", responseTxt)
-  });
-  alert("Usuario Logado");
-}
-
-function signup() {
-  fetch("https://ucdb-plataform1.herokuapp.com/api/v1/users/", {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    body: dataSignUp()
-  })
-    .then(response => {
-      if (!response.ok) throw new Error("Registration failed");
-      return response.text();
-    })
-    .then(data => {
-      console.log(data)
-      alert("User was successfully registered")
-    });
-  alert("Usuário registrado");
-
-  return false;
-}
-
-
-
 
 // * SIGNIN AND SIGNUP FETCHS END * \\
 
 const modSignIn = document.getElementById("signInMod");                //SignIn button
-const modSignUp = document.getElementById("signUpMod");                //SignUp button
 const $discSearchBar = document.getElementById("discSearchBar");       //Discipline search bar
 const $discBt = document.getElementsByClassName("discBt");             //Discipline button
+const discModal = document.getElementById("disciplinaMod");
 var bufferTime = null;                                                 //Time to buffer user input on discipline search bar
 
-document.getElementById("loginBt").onclick = () => {                   //Opens SignIn modal
-  modSignIn.style.display = "block";
-}
-
-document.getElementById("registerBt").onclick = () => {                //Opens SignUp modal
-  modSignUp.style.display = "block";
-}
-
-window.onclick = (event) => {                                          //Closes both modals if any of those are open
-  if (event.target == modSignIn || event.target == modSignUp) {
-    modSignIn.style.display = "none"
-    modSignUp.style.display = "none"
-  }
-  else if (event.target == discModal) {
-    killAllChildren("#comentariosContainer")
-    discModal.style.display = "none"
+const loggedInCheck = function () {
+  if (localStorage.getItem("userToken") == null) {
+    alert("Faça login para continuar")
+    modSignIn.style.display = "flex";
+    return true;
   }
 }
 
 $discSearchBar.onkeyup = async function () {                           //Receaves user input on the discipline search bar
-  if ($discSearchBar.value == "") {
-    killAllChildren()
+  if (!$discSearchBar.value) {
+    killAllChildren("#discSearchBar")
     return;
   }
 
@@ -118,13 +33,8 @@ $discSearchBar.onkeyup = async function () {                           //Receave
   //it will run the button creator function
 }
 
-$discBt.onclick = async function () {                                  //Opens a modal with the discipline information
-  // console.log($discBt.id)
-  // await perfilFetcher()
-}
-
 var disciplineBtControler = async function () {                        //Controls the discipline button creation
-  if ($discSearchBar.value == "") return
+  if (!$discSearchBar.value) return
   const disciplineList = await disciplineFethcer()
 
   killAllChildren(".disciplinas-container"); //:D
@@ -134,13 +44,9 @@ var disciplineBtControler = async function () {                        //Control
   });
 }
 
-capitalize = function (string) {                                       //Capitalizes the arg string
-  string = string.toLowerCase()
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function killAllChildren(elemento) {                                           //Cleans disciplinas container
   let $discContainer = document.querySelector(elemento);
+  if (!$discContainer) return;
   while ($discContainer.firstChild) {
     $discContainer.removeChild($discContainer.firstChild);
   }
@@ -153,19 +59,23 @@ function discButtonCreator(discId, discNome) {                         // Create
   button.id = discId;
   button.innerText = (discId + " - " + capitalize(discNome));
   button.onclick = () => {
-    if (localStorage.getItem("userToken") === null) return;
-    perfilModController(discId);
-  }
+    if (loggedInCheck()) return;
+      perfilModController(discId);
+    }
   button.className = "discBt";
-
+  console.log(button.innerText);
+  
   document.querySelector(".disciplinas-container").appendChild(button);
 }
 
-disciplineFethcer = async function () {                                //Fetches a discipline using a substring on the back-end using 
+async function disciplineFethcer() {                                //Fetches a discipline using a substring on the back-end using 
   const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/findSubjects/?substring=" + $discSearchBar.value.replace(/ /g, "%20");
   let fetcher = await fetch(requestUrl)
   if (!fetcher.ok) throw new Error("Discipline fetch failed");
   let discJson = await fetcher.json();
+  
+  console.log(discJson);
+  
 
   return discJson;
 }
@@ -175,26 +85,54 @@ disciplineFethcer = async function () {                                //Fetches
 
 // * PERFIL BEGIN * \\
 
-const discModal = document.getElementById("disciplinaMod");
 
-perfilModController = async function (id) {
-
-  discModal.style.display = "block";
-
+async function perfilModController(id) {
+  killAllChildren("#comentariosContainer");
+  disciplinaModal("", "");
+  
+  
   const perfilJson = await perfilFetcher(id);
-
-  disciplinaModal(perfilJson["disciplina"], perfilJson["qtdLikes"])
+  discModal.style.display = "block";
+  
+  disciplinaModal(perfilJson["id"], perfilJson["disciplina"], perfilJson["qtdLikes"])
   console.log(perfilJson["comentarios"]);
 
+  mudarCorBotaoLike(perfilJson["flagLike"])
+
   perfilJson["comentarios"].forEach(comentario => {
-    comentarioCreator(comentario["usuario"]["firstName"] + " " + comentario["usuario"]["firstName"],
+    // comentarioCreator(comentario["usuario"]["firstName"] + " " + comentario["usuario"]["firstName"],
+    comentarioCreator("nome",
       comentario["date"] + " " + comentario["hora"], comentario["comentario"]);
   });
 }
 
-function disciplinaModal(nomeDisc, numLikes) {
+function mudarCorBotaoLike (flag) {
+  if (flag) document.getElementById("likeBt").style = "filter: invert(32%) sepia(95%) saturate(1073%) hue-rotate(103deg) brightness(95%) contrast(105%);"
+  else document.getElementById("likeBt").style = ""
+}
+
+function disciplinaModal(idDisc, nomeDisc, numLikes) {
   document.querySelector("#nomeDisc").innerText = nomeDisc;
-  document.querySelector("#likeNum").innerText = numLikes;
+  const $likeInfo = document.querySelector("#likeInfo")
+
+  killAllChildren("#likeInfo")
+
+  const likeBt = document.createElement("input")
+  likeBt.type = "image"
+  likeBt.src = "like.svg"
+  likeBt.id = "likeBt"
+  likeBt.onclick = async () => {
+    const likeUpdate = await curtirPerfil(idDisc)
+    mudarCorBotaoLike(likeUpdate[0])
+
+    document.querySelector("#likeNum").innerText = likeUpdate[1]
+  }
+
+  const likeCounter = document.createElement("p")
+  likeCounter.id = "likeNum"
+  likeCounter.innerText = numLikes;
+
+  $likeInfo.append(likeBt, likeCounter)
 }
 
 function comentarioCreator(autor, data, comentario) {
@@ -208,12 +146,12 @@ function comentarioCreator(autor, data, comentario) {
   </div>
   ` + comentario + `
 <br>
-<input type="text" id="subComentario">
+<input type="text" class="pure-input-rounded" id="subComentario" placeholder="Comentar">
 </div>`
   document.querySelector("#comentariosContainer").appendChild(comentarioDiv);
 }
 
-perfilFetcher = async function (id) {                                  //Fetches for a perfil of a discipline using its id on the back-end
+async function perfilFetcher(id) {                                  //Fetches for a perfil of a discipline using its id on the back-end
   const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/getPerfil?id=" + id;
 
   let fetcher = await fetch(requestUrl)
@@ -223,8 +161,30 @@ perfilFetcher = async function (id) {                                  //Fetches
   console.log(perfilData);
 
   return perfilData;
-  // perfilModController(perfilData);
 }
 
+// const botaoLike = document.getElementById("likeBt")
 
+async function curtirPerfil(id) {                                  //Fetches for a perfil of a discipline using its id on the back-end
+  const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/like?id=" + id;
+  const userToken = await JSON.parse(localStorage.getItem("userToken"))["token"]
+  console.log("kkk");
+  
+  const fetcher = await fetch(requestUrl, {
+    method: "PUT",
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 
+    'authorization': 'Bearer ' + userToken}
+  })
+
+  if (!fetcher.ok) throw new Error(response);
+
+  const responseTxt = await fetcher.text();
+    
+  const responseJson = await JSON.parse(responseTxt);
+  
+  return [responseJson["flagLike"], responseJson["qtdLikes"]]
+    
+};
+
+export default model; 
 // * PERFIL END * \\

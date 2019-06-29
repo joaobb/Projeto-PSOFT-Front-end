@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    min-height: 100%;
+    min-height: 95%;
     background-color: #ffe4c4;
     margin: 0;
     position: relative;
@@ -97,6 +97,9 @@ li, a, button, h1 {
 
 #signInMod {
     display: none;
+
+    align-items: center;
+    
     position: fixed;
     justify-content: center;
     z-index: 1;
@@ -104,13 +107,15 @@ li, a, button, h1 {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: white;
     background-color: rgba(0,0,0,0.4);
 }
 
 #signUpMod {
     display: none;
+
+    align-items: center;
+
     position: fixed;
     justify-content: center;
     z-index: 1;
@@ -118,12 +123,12 @@ li, a, button, h1 {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
     background-color: rgb(177, 2, 2);
     background-color: rgba(0,0,0,0.4);
 }
 
 .modContent {
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,7 +137,9 @@ li, a, button, h1 {
     flex-direction: column;
 
     background-color: #fefefe;
-    margin: 20% auto; /* 15% from the top and centered */
+
+    border-radius: 10px;
+
     border: 1px solid #888;
     max-width: 450px;
     max-height: 550px;
@@ -168,7 +175,7 @@ li, a, button, h1 {
     transition: all 0.3s ease 0s;
     
     background-color: #fffaf4;
-    /* background-color: #000; */
+
     border-radius: 10px;
 
 }
@@ -185,6 +192,7 @@ li, a, button, h1 {
 
     width: 100%;
     height: 45px;
+
 
     box-shadow: 0 2px 6px rgba(0,0,0,.1);
     background-color: #fff7ef;
@@ -219,7 +227,9 @@ li, a, button, h1 {
     margin: 3% auto; /* 15% from the top and centered */
     border: 1px solid #888;
     max-width: 70%;
-    margin-bottom: 300px;
+
+    border-radius: 10px;
+
 }
 
 #dadosDisc {
@@ -227,7 +237,7 @@ li, a, button, h1 {
     align-items: center;
     justify-content: space-around;
 
-    margin: 15px;
+    margin: 30px 15px 15px;
 }
 
 #likeInfo {
@@ -237,17 +247,19 @@ li, a, button, h1 {
 
 #likeBt {
     margin-right: 10px;
-    width:40px;
-    height: 40px;
+      width:1.5em;
+    height: 1.5em;
 }
 
-#likeBt:hover {
+/* #likeBt:hover {
     filter: invert(32%) sepia(95%) saturate(1073%) hue-rotate(103deg) brightness(95%) contrast(105%);
-}
+} */
 
 .comentario {
+    border-radius: 10px;
     background-color: bisque;
     margin: 15px 10%;
+    padding: 15px;
     text-align: left;
 }
 
@@ -256,3 +268,18 @@ li, a, button, h1 {
     justify-content: space-around;
 }
 
+#subComentario {
+    margin: 10px 10px 0px;
+    border-radius: 2em;
+    padding: .1em 0.5em;
+}
+
+#disconnectarBt {
+    padding: 11.94px 61.35px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
+#disconnectarBt:hover {
+    background-color: rgba(255, 104, 90, 0.8);
+}
