@@ -3,10 +3,11 @@
 
 <head>
     <meta charset=utf8>
-    <title>UCDb</title>
+    <title>UCDb Ranking</title>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
         integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleRanking.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -18,9 +19,7 @@
             <nav class="main-nav">
                 <ul class="main-nav-list">
                     <li>
-                        <a href="ranking.html">
-                            <button class="header_bt" id="rankingBt">/rank-disciplinas</button>
-                        </a>
+                        <button class="header_bt" id="rankingBt">/rank-disciplinas</button>
                     </li>
                 </ul>
             </nav>
@@ -37,18 +36,22 @@
         </div>
     </header>
 
-    <main class="main-content">
-        <div class="content">
-            <h1>Procura tuas cadeiras ai...</h1>
+    <div id="rankBySelectorContainer">
+        ORDENAR POR
+        <ul class="rankBySelector">
+            <li>
+                <input type="image" class="rankBySelectorOptions" id="rankByLikeNumb" src="images/like.svg"
+                    title="ORDENAR POR NUMERO DE LIKES">
+            </li>
 
-            <form class="pure-form" id="cadeiraForm" onsubmit="return false">
-                <input type="text" id="disciplinaSearchBar" autocomplete="off" class="pure-input-rounded"
-                    placeholder="Nome da cadeira :D">
-            </form>
-        </div>
-    </main>
+            <li>
+                <input type="image" class="rankBySelectorOptions" id="rankByCommentNumb" src="images/comment.png"
+                    title="ORDENAR POR NUMERO DE COMENTARIOS">
+            </li>
+        </ul>
+    </div>
 
-    <main class="disciplinas-container"></main>
+    <main class="ranking-container"></main>
 
     <div id="signInMod">
         <div class="modContent">
@@ -84,26 +87,15 @@
     </div>
 
 
-    <div id="disciplinaMod">
-        <div class="modContentDisc">
-            <div id="dadosDisc">
-                <h2 id="nomeDisc"></h2>
-                <div id="likeInfo"></div>
-            </div>
-            <div id="perfilComentarioDiv"></div>
-            <div id="comentariosContainer"></div>
-        </div>
-    </div>
-
     <footer class="footer">
         <div>
-            <h4>Copyright © 2008 UCDb</h4>        
+            <h4>Copyright © 2008 UCDb</h4>
         </div>
     </footer>
 
     <script src="script.js"></script>
     <script type="module" src="signInUpOut.js"></script>
-    <script type="module" src="perfilDisciplina.js"></script>
+    <script type="module" src="rankingScript.js"></script>
 </body>
 
 
