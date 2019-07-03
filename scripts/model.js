@@ -38,10 +38,6 @@ const model = {
            this.$email = form["email"].value;
         this.$password = form["password"].value;
 
-        console.log(form["email"].value);
-        console.log(this.$password);
-        
-
         if (!this.validEmail(this.$email)) {
             alert("Email inserido invalido!\nPor favor verifique-o e tente novamente.");
             throw new Error("Email inserido invalido!\nPor favor verifique-o e tente novamente.");

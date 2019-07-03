@@ -43,7 +43,6 @@ function DisciplinaButtonCreator(discId, discNome) {
         perfilModController(discId);
     }
     button.className = "discBt";
-    console.log(button.innerText);
 
     document.querySelector(".disciplinas-container").appendChild(button);
 }
@@ -54,8 +53,6 @@ async function disciplinaFethcer() {
     let fetcher = await fetch(requestUrl)
     if (!fetcher.ok) throw new Error("Subject fetch failed");
     let discJson = await fetcher.json();
-
-    console.log(discJson);
 
     return discJson;
 }
@@ -69,12 +66,12 @@ async function perfilModController(id) {
     const perfilJson = await perfilFetcher(id);
 
     perfilModalLikeControler(perfilJson["id"], perfilJson["disciplina"], perfilJson["qtdLikes"])
-    console.log(perfilJson["comentarios"]);
 
+    console.log(perfilJson)
     mudarCorBotaoLike(perfilJson["flagLike"])
 
     perfilJson["comentarios"].forEach(comentario => {
-        if (comentario["comentario"]) {
+        if (!comentario["apagado"]) {
             comentarioCreator(id, comentario["id"], comentario["usuario"]["firstName"] + " " + comentario["usuario"]["lastName"],
                 comentario["date"] + " " + comentario["hora"], comentario["usuario"]["email"], comentario["comentario"]);
         }
@@ -101,8 +98,6 @@ async function perfilFetcher(id) {
     }
 
     let perfilData = await fetcher.json();
-
-    console.log(perfilData);
 
     return perfilData;
 }
@@ -189,7 +184,6 @@ function comentarioCreator(disciplinaId, comentarioId, autor, data, email, comen
 
     subComentarioInp.onkeyup = async function (event) {
         if (event.keyCode === 13) {
-            console.log("teje sub-comentado")
             adicionarSubComentario(disciplinaId, comentarioId, subComentarioInp.value)
         }
     }
@@ -210,7 +204,6 @@ function usuarioDonoDoComentario(comentarioId, disciplinaId, email) {
         comentarioDelete.onclick = async function () {
             await deletarComentarioFetcher(disciplinaId, comentarioId)
             await perfilModController(disciplinaId)
-            console.log("Teje deletado " + comentarioId)
         }
         return comentarioDelete;
     }
@@ -229,7 +222,6 @@ function comentarioPerfilInputCreator(id) {
         if (event.keyCode === 13) {
             await comentarPerfil(id, document.getElementById("comentarioPerfilInp").value)
             await perfilModController(id)
-            console.log("teje comentado")
         }
     }
 
@@ -241,9 +233,6 @@ async function adicionarSubComentario(disciplinaId, comentarioId, comentario) {
     const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/addResposta?idPerfil=" + disciplinaId + "&idComentario=" + comentarioId;
     const userToken = await JSON.parse(localStorage.getItem("userToken"))["token"]
     const jsonBody = JSON.stringify(comentarioToJson(comentario))
-
-    console.log(jsonBody)
-    console.log(requestUrl)
 
     const fetcher = await fetch(requestUrl, {
         method: "POST",
@@ -261,7 +250,6 @@ async function adicionarSubComentario(disciplinaId, comentarioId, comentario) {
     }
 
     const responseTxt = await fetcher.text();
-    console.log(responseTxt);
 
     return false;
 };
@@ -298,8 +286,6 @@ async function comentarPerfil(id, comentario) {
     }
 
     const responseTxt = await fetcher.text();
-    console.log(responseTxt);
-
     return false;
 };
 
@@ -324,5 +310,5 @@ async function deletarComentarioFetcher(idPerfil, idComentario) {
     }
 
     const responseTxt = await fetcher.text();
-    console.log(responseTxt);
+
 };

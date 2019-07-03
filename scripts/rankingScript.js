@@ -1,4 +1,3 @@
-
 //Opcao de ordenacao por numero do likes
 const $likeNumberOption = document.getElementById("rankByLikeNumb")
 

@@ -9,8 +9,6 @@ async function tokenExpirado(responseMessage) {
   const responseText = await responseMessage.text()
   const responseJson = await JSON.parse(responseText)
 
-  console.log(responseJson["message"])
-
   if (responseJson["message"].startsWith("JWT expirada")) {
     localStorage.removeItem("userToken")
     localStorage.removeItem("userEmail")
