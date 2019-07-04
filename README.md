@@ -1,6 +1,6 @@
 # UCDb - UFCG Cursos database - Front-end
 
-<a align="center" href="http://ucdb-frontend-jr.herokuapp.com/index.html">
+<a align="center" href="http://ucdb-frontend-jr.herokuapp.com/index.html" target="_blank">
  <p>
   <img src="https://github.com/joaobb/Projeto-PSOFT-Front-end/blob/master/images/ucdb.png?raw=true" max-height="150" width="150" title="UCDb deploy">
    
