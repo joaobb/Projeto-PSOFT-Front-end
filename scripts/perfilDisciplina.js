@@ -18,7 +18,7 @@ $disciplinaSearchBar.onkeyup = async function () {
     }
 
     if (bufferTime != null) clearTimeout(bufferTime);                           //Restart the buffer if it is the first time being called
-    bufferTime = setTimeout(await DisciplinaBtControler, 300);                  //Starts the buffer countdown, if the uses don't write anything new in 300ms, 
+    bufferTime = setTimeout(await DisciplinaBtControler, 400);                  //Starts the buffer countdown, if the uses don't write anything new in 300ms, 
     //it will run the button creator function
 }
 
@@ -62,29 +62,33 @@ async function disciplinaFethcer() {
 }
 
 //Controla o modal dos perfis das disciplinas, limpando e adicionando a este as informacoes da disciplina escolhida pelo usuario
-async function perfilModController(id) {
+async function perfilModController(discId) {
     killAllChildren("#comentariosContainer");
     killAllChildren("#perfilComentarioDiv");
-    comentarioPerfilInputCreator(id)
+    comentarioPerfilInputCreator(discId)
 
-    const perfilJson = await perfilFetcher(id);
+    const perfilJson = await perfilFetcher(discId);
 
     perfilModalLikeControler(perfilJson["id"], perfilJson["disciplina"], perfilJson["qtdLikes"])
 
     console.log(perfilJson)
     mudarCorBotaoLike(perfilJson["flagLike"])
 
+    let subComentarioDivNumber = 0;
+
     perfilJson["comentarios"].forEach(comentario => {
         if (!comentario["apagado"]) {
             console.log(comentario)
 
-            comentarioPrincipalCreator(id, comentario["id"], comentario["usuario"]["firstName"] + " " + comentario["usuario"]["lastName"],
+            comentarioPrincipalCreator(discId, comentario["id"], comentario["usuario"]["firstName"] + " " + comentario["usuario"]["lastName"],
                 comentario["date"] + " " + comentario["hora"], comentario["usuario"]["email"], comentario["comentario"]);
 
+            subComentarioDivNumber++;
             comentario["comentarioDocomentario"].forEach(subComentario => {
                 if (!subComentario["apagado"]) {
-                    comentarioComentarioCreator(id, subComentario["id"] ,subComentario["usuario"]["firstName"] + " " + subComentario["usuario"]["lastName"], 
-                    subComentario["date"] + " " + subComentario["hora"], subComentario["usuario"]["email"],subComentario["comentario"])
+                    console.log(subComentario)
+                    comentarioComentarioCreator(discId, comentario["id"], subComentario["id"], subComentario["usuario"]["firstName"] + " " + subComentario["usuario"]["lastName"],
+                        subComentario["date"] + " " + subComentario["hora"], subComentario["usuario"]["email"], subComentario["comentario"])
                 }
             })
         }
@@ -191,7 +195,7 @@ function estruturaDataGeralComentario(autor, data, comentario) {
     return comentarioData;
 }
 
-function comentarioComentarioCreator(disciplinaId, comentarioId, autor, data, email, comentario) {
+function comentarioComentarioCreator(disciplinaId, comPaiId, comentarioId, autor, data, email, comentario) {
     const comentarioDoComentario = document.createElement("div");
     comentarioDoComentario.className = "comentarioComentario"
 
@@ -205,7 +209,7 @@ function comentarioComentarioCreator(disciplinaId, comentarioId, autor, data, em
     comentarioComentarioDiv.append(comentarioData, usuarioDonoDoComentario(comentarioId, disciplinaId, email))
     comentarioDoComentario.appendChild(comentarioComentarioDiv)
 
-    document.getElementById("subComentarioContainer").appendChild(comentarioDoComentario)
+    document.getElementById("comentarioDe" + comPaiId).appendChild(comentarioDoComentario)
 }
 
 //Constroi a estrutura dos comentarios dos perfis das disciplinas
@@ -232,7 +236,8 @@ function comentarioPrincipalCreator(disciplinaId, comentarioId, autor, data, ema
     }
 
     const subComentarioContainer = document.createElement("div")
-    subComentarioContainer.id = "subComentarioContainer"
+    subComentarioContainer.className = "subComentarioContainer"
+    subComentarioContainer.id = "comentarioDe" + comentarioId;
 
     comentarioDiv.append(comentarioData, subComentarioInp, usuarioDonoDoComentario(comentarioId, disciplinaId, email), subComentarioContainer)
     perfilComentario.appendChild(comentarioDiv)
@@ -279,12 +284,6 @@ async function adicionarSubComentario(disciplinaId, comentarioId, comentario) {
     const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/addResposta?idPerfil=" + disciplinaId + "&idComentario=" + comentarioId;
     const userToken = await JSON.parse(localStorage.getItem("userToken"))["token"]
     const jsonBody = JSON.stringify(comentarioToJson(comentario))
-
-    console.log(requestUrl)
-    console.log(disciplinaId)
-    console.log(comentarioId)
-    console.log(comentario)
-    console.log(jsonBody)
 
     const fetcher = await fetch(requestUrl, {
         method: "POST",

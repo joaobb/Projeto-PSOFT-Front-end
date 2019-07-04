@@ -29,8 +29,8 @@ async function rankingByControler(option) {
 
     for (let index = 0; index < rankingList.length; index++) {
         const disciplina = rankingList[index];
-
-        disciplinaRanking(index + 1, disciplina["disciplina"], disciplina["qtdLikes"], disciplina["comentarios"].length);
+        console.log(rankingList[index])
+        disciplinaRanking(index + 1, disciplina["disciplina"], disciplina["qtdLikes"], disciplina["qtdsComentarios"]);
     }
 }
 
@@ -50,7 +50,7 @@ async function getRankingBy(option) {
         tokenExpirado(fetcher)
         throw new Error(fetcher.response);
     }
-
+    console.log(fetcher)
     let rankingJson = await fetcher.json();
     return rankingJson;
 }
