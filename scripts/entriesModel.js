@@ -1,4 +1,4 @@
-const model = {
+const entriesModel = {
     "$firstName" : null,
     "$lastName"  : null,
     "$email"     : null,
@@ -66,4 +66,4 @@ const model = {
     },
 };
 
-export default model; 
+export default entriesModel; 

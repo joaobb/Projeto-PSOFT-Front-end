@@ -1,4 +1,4 @@
-import model from "./model.js";
+import entriesModel from "./entriesModel.js";
 
 const $signUpBt = document.getElementById("signUpBt");                //SignUp button
 const $signInBt = document.getElementById("signInBt");                //SignIn button
@@ -25,8 +25,8 @@ window.onclick = (event) => {
 
 //Funcao que reune as informacoes inseridas pelo usuario sobre login e as envia para o backend por meio de um fetch 
 async function signIn() {
-    model.signIn(document.forms["signIn"])
-    const jsonBody = JSON.stringify(model.signInToJson());
+    entriesModel.signIn(document.forms["signIn"])
+    const jsonBody = JSON.stringify(entriesModel.signInToJson());
 
     const fetcher = await fetch("https://ucdb-plataform1.herokuapp.com/api/v1/auth/login", {
         method: "POST",
@@ -45,7 +45,7 @@ async function signIn() {
     alert("Usuário Logado com sucesso");
     modSignIn.style.display = "none";
     localStorage.setItem("userToken", responseTxt)
-    localStorage.setItem("userEmail", model.signInToJson()["email"])
+    localStorage.setItem("userEmail", entriesModel.signInToJson()["email"])
 
     aparecerDisconnect()
 }
@@ -53,8 +53,8 @@ async function signIn() {
 
 //Funcao que reune as informacoes inseridas pelo usuario sobre cadastro de usuario e as envia para o backend por meio de um fetch 
 function signUp() {
-    model.signUp(document.forms["signUp"])
-    const jsonBody = JSON.stringify(model.signUpToJson());
+    entriesModel.signUp(document.forms["signUp"])
+    const jsonBody = JSON.stringify(entriesModel.signUpToJson());
 
     fetch("https://ucdb-plataform1.herokuapp.com/api/v1/users/", {
         method: 'POST',
@@ -126,4 +126,6 @@ function killAllChildren(elemento) {
     }
 }
 
-export default model;
+export default entriesModel;
+
+

@@ -71,14 +71,12 @@ async function perfilModController(discId) {
 
     perfilModalLikeControler(perfilJson["id"], perfilJson["disciplina"], perfilJson["qtdLikes"])
 
-    console.log(perfilJson)
     mudarCorBotaoLike(perfilJson["flagLike"])
 
     let subComentarioDivNumber = 0;
 
     perfilJson["comentarios"].forEach(comentario => {
         if (!comentario["apagado"]) {
-            console.log(comentario)
 
             comentarioPrincipalCreator(discId, comentario["id"], comentario["usuario"]["firstName"] + " " + comentario["usuario"]["lastName"],
                 comentario["date"] + " " + comentario["hora"], comentario["usuario"]["email"], comentario["comentario"]);
@@ -86,7 +84,6 @@ async function perfilModController(discId) {
             subComentarioDivNumber++;
             comentario["comentarioDocomentario"].forEach(subComentario => {
                 if (!subComentario["apagado"]) {
-                    console.log(subComentario)
                     comentarioComentarioCreator(discId, comentario["id"], subComentario["id"], subComentario["usuario"]["firstName"] + " " + subComentario["usuario"]["lastName"],
                         subComentario["date"] + " " + subComentario["hora"], subComentario["usuario"]["email"], subComentario["comentario"])
                 }
@@ -169,6 +166,7 @@ async function curtirPerfil(id) {
 
 // COMENTARIOS BEGIN \\
 
+//Função que cria o esqueleto de um comentario, este podendo ser comentário principal, ou uma resposta de um comentário
 function estruturaDataGeralComentario(autor, data, comentario) {
     const comentarioData = document.createElement("div")
     comentarioData.className = "comentarioData"
@@ -195,6 +193,7 @@ function estruturaDataGeralComentario(autor, data, comentario) {
     return comentarioData;
 }
 
+//Constroi a estrutura dos comentarios de comentarios dos perfis das disciplinas e adiciona esta ao HTML da página
 function comentarioComentarioCreator(disciplinaId, comPaiId, comentarioId, autor, data, email, comentario) {
     const comentarioDoComentario = document.createElement("div");
     comentarioDoComentario.className = "comentarioComentario"
@@ -202,7 +201,6 @@ function comentarioComentarioCreator(disciplinaId, comPaiId, comentarioId, autor
     const comentarioComentarioDiv = document.createElement("div")
     comentarioDoComentario.className = "comentarioComentarioDiv"
 
-    console.log(comentario)
 
     const comentarioData = estruturaDataGeralComentario(autor, data, comentario)
 
@@ -212,7 +210,7 @@ function comentarioComentarioCreator(disciplinaId, comPaiId, comentarioId, autor
     document.getElementById("comentarioDe" + comPaiId).appendChild(comentarioDoComentario)
 }
 
-//Constroi a estrutura dos comentarios dos perfis das disciplinas
+//Constroi a estrutura dos comentarios dos perfis das disciplinas e adiciona esta ao HTML da página
 function comentarioPrincipalCreator(disciplinaId, comentarioId, autor, data, email, comentario) {
     const perfilComentario = document.createElement("div");
     perfilComentario.className = "perfilComentario"
@@ -229,7 +227,6 @@ function comentarioPrincipalCreator(disciplinaId, comentarioId, autor, data, ema
 
     subComentarioInp.onkeyup = async function (event) {
         if (event.keyCode === 13) {
-            console.log("subcomentado")
             await adicionarSubComentario(disciplinaId, comentarioId, subComentarioInp.value);
             await perfilModController(disciplinaId);
         }
