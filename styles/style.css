@@ -298,3 +298,23 @@ li, a, button, h1, p {
 #disconnectarBt:hover {
     background-color: rgba(255, 104, 90, 0.8);
 }
+
+#subComentarioContainer {
+    border-radius: 10px;
+    background-color: rgb(255, 212, 160);
+    margin: 20px 0 0 -5px;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+.comentarioComentarioDiv {
+    border-radius: 10px;
+    background-color: #ffb962;
+    margin: 10px 5px;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+.comentarioData{
+    margin: 5px;
+}

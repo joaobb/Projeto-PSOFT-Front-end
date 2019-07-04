@@ -24,9 +24,11 @@ $disciplinaSearchBar.onkeyup = async function () {
 
 //Controla a criacao de botoes das disciplinas dinamicamente
 var DisciplinaBtControler = async function () {
-    const DisciplinasList = await disciplinaFethcer()
+    if (!$disciplinaSearchBar.value) return;
 
     killAllChildren(".disciplinas-container"); //:D
+
+    const DisciplinasList = await disciplinaFethcer()
 
     DisciplinasList.forEach(Subject => {
         DisciplinaButtonCreator(Subject["id"], Subject["nome"]);
@@ -49,6 +51,8 @@ function DisciplinaButtonCreator(discId, discNome) {
 
 //Recupera todas as disciplinas que tem o nome/parte dele igual ao pesquisado pelo usuario
 async function disciplinaFethcer() {
+    if (!$disciplinaSearchBar.value) return;
+
     const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/findSubjects/?substring=" + $disciplinaSearchBar.value.replace(/ /g, "%20");
     let fetcher = await fetch(requestUrl)
     if (!fetcher.ok) throw new Error("Subject fetch failed");
@@ -72,8 +76,17 @@ async function perfilModController(id) {
 
     perfilJson["comentarios"].forEach(comentario => {
         if (!comentario["apagado"]) {
-            comentarioCreator(id, comentario["id"], comentario["usuario"]["firstName"] + " " + comentario["usuario"]["lastName"],
+            console.log(comentario)
+
+            comentarioPrincipalCreator(id, comentario["id"], comentario["usuario"]["firstName"] + " " + comentario["usuario"]["lastName"],
                 comentario["date"] + " " + comentario["hora"], comentario["usuario"]["email"], comentario["comentario"]);
+
+            comentario["comentarioDocomentario"].forEach(subComentario => {
+                if (!subComentario["apagado"]) {
+                    comentarioComentarioCreator(id, subComentario["id"] ,subComentario["usuario"]["firstName"] + " " + subComentario["usuario"]["lastName"], 
+                    subComentario["date"] + " " + subComentario["hora"], subComentario["usuario"]["email"],subComentario["comentario"])
+                }
+            })
         }
     });
 
@@ -152,13 +165,9 @@ async function curtirPerfil(id) {
 
 // COMENTARIOS BEGIN \\
 
-//Constroi a estrutura dos comentarios dos perfis das disciplinas
-function comentarioCreator(disciplinaId, comentarioId, autor, data, email, comentario) {
-    let perfilComentario = document.createElement("div");
-    perfilComentario.className = "perfilComentario"
-
-    const comentarioDiv = document.createElement("div")
-    comentarioDiv.className = "comentario"
+function estruturaDataGeralComentario(autor, data, comentario) {
+    const comentarioData = document.createElement("div")
+    comentarioData.className = "comentarioData"
 
     const donoComentarioDiv = document.createElement("div")
     donoComentarioDiv.className = "donoComentario"
@@ -177,6 +186,38 @@ function comentarioCreator(disciplinaId, comentarioId, autor, data, email, comen
     comentarioTextH.id = "comentarioText"
     comentarioTextH.innerText = comentario;
 
+    comentarioData.append(donoComentarioDiv, comentarioTextH)
+
+    return comentarioData;
+}
+
+function comentarioComentarioCreator(disciplinaId, comentarioId, autor, data, email, comentario) {
+    const comentarioDoComentario = document.createElement("div");
+    comentarioDoComentario.className = "comentarioComentario"
+
+    const comentarioComentarioDiv = document.createElement("div")
+    comentarioDoComentario.className = "comentarioComentarioDiv"
+
+    console.log(comentario)
+
+    const comentarioData = estruturaDataGeralComentario(autor, data, comentario)
+
+    comentarioComentarioDiv.append(comentarioData, usuarioDonoDoComentario(comentarioId, disciplinaId, email))
+    comentarioDoComentario.appendChild(comentarioComentarioDiv)
+
+    document.getElementById("subComentarioContainer").appendChild(comentarioDoComentario)
+}
+
+//Constroi a estrutura dos comentarios dos perfis das disciplinas
+function comentarioPrincipalCreator(disciplinaId, comentarioId, autor, data, email, comentario) {
+    const perfilComentario = document.createElement("div");
+    perfilComentario.className = "perfilComentario"
+
+    const comentarioDiv = document.createElement("div")
+    comentarioDiv.className = "comentario"
+
+    const comentarioData = estruturaDataGeralComentario(autor, data, comentario)
+
     const subComentarioInp = document.createElement("input")
     subComentarioInp.type = "text"
     subComentarioInp.className = "subComentario"
@@ -184,11 +225,16 @@ function comentarioCreator(disciplinaId, comentarioId, autor, data, email, comen
 
     subComentarioInp.onkeyup = async function (event) {
         if (event.keyCode === 13) {
-            adicionarSubComentario(disciplinaId, comentarioId, subComentarioInp.value)
+            console.log("subcomentado")
+            await adicionarSubComentario(disciplinaId, comentarioId, subComentarioInp.value);
+            await perfilModController(disciplinaId);
         }
     }
 
-    comentarioDiv.append(donoComentarioDiv, comentarioTextH, subComentarioInp, usuarioDonoDoComentario(comentarioId, disciplinaId, email))
+    const subComentarioContainer = document.createElement("div")
+    subComentarioContainer.id = "subComentarioContainer"
+
+    comentarioDiv.append(comentarioData, subComentarioInp, usuarioDonoDoComentario(comentarioId, disciplinaId, email), subComentarioContainer)
     perfilComentario.appendChild(comentarioDiv)
 
     document.querySelector("#comentariosContainer").appendChild(perfilComentario);
@@ -233,6 +279,12 @@ async function adicionarSubComentario(disciplinaId, comentarioId, comentario) {
     const requestUrl = "https://ucdb-plataform1.herokuapp.com/api/v1/disciplina/addResposta?idPerfil=" + disciplinaId + "&idComentario=" + comentarioId;
     const userToken = await JSON.parse(localStorage.getItem("userToken"))["token"]
     const jsonBody = JSON.stringify(comentarioToJson(comentario))
+
+    console.log(requestUrl)
+    console.log(disciplinaId)
+    console.log(comentarioId)
+    console.log(comentario)
+    console.log(jsonBody)
 
     const fetcher = await fetch(requestUrl, {
         method: "POST",
